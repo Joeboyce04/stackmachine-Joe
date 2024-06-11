@@ -26,6 +26,37 @@ func TestEmptyError(t *testing.T){
 
 }
 
+func TestInvalidCommand(t *testing.T){
+	_, GotErr:= StackMachine("DOGBANA")
+
+	want:= errors.New("Invalid Command")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"But didnt get invalid command prompt")
+	}
+}
+
+func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
+
+	_, GotErr:= StackMachine("+-hello")
+
+	want:= errors.New("Invalid Command")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"But didnt get invalid command prompt")
+	}
+}
+
+func TestValidCommand(t *testing.T){
+	_, GotErr:= StackMachine("+")
+
+	want:= errors.New("Valid Command")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"But didnt get Valid Command prompt")
+	}
+}
+
 
 /*
   All these tests must pass for completion
