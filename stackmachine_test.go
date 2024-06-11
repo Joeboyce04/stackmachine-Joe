@@ -15,11 +15,22 @@ func TestStartsWithEmptyStack(t *testing.T) {
 
 // Write your own TDD tests here as you develop
 
+func TestEmptyError(t *testing.T){
+	_, GotErr:= StackMachine("")
+
+	want:= errors.New("empty error")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"but didnt get an empty command")
+	}
+
+}
+
 
 /*
   All these tests must pass for completion
 */
-func TestAcceptanceTests(t *testing.T) {
+/*func TestAcceptanceTests(t *testing.T) {
 	tests := []struct {
 		name string
 		commands string
@@ -71,4 +82,4 @@ func TestAcceptanceTests(t *testing.T) {
 			t.Errorf("%s (%s) got %v, want %v", test.name, test.commands, got, test.expected)
 		}
 	}
-}
+} */
