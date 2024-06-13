@@ -38,7 +38,7 @@ func TestInvalidCommand(t *testing.T){
 
 func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 
-	_, GotErr:= StackMachine("+-hello")
+	_, GotErr:= StackMachine("+hello-")
 
 	want:= errors.New("Invalid Command")
 
@@ -46,6 +46,8 @@ func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 		t.Error("Wanted",want,"But didnt get invalid command prompt")
 	}
 }
+
+
 
 func TestValidCommand(t *testing.T){
 	_, GotErr:= StackMachine("+")
@@ -57,7 +59,41 @@ func TestValidCommand(t *testing.T){
 	}
 }
 
+/*func TestIfTwoSymbolsValidCommand(t *testing.T){
 
+	_, GotErr:= StackMachine("+ -")
+
+	want:= errors.New("Invalid Command")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"But didnt get Invalid Command prompt")
+	}
+}
+
+func TestCommandSymbolAndWord(t *testing.T){
+
+	_, GotErr:= StackMachine("+ DUP")
+
+	want:= errors.New("Invalid Command")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Wanted",want,"But didnt get Invalid Command prompt")
+	}
+}
+
+*/
+
+func TestTwoFewAdd(t *testing.T){
+	_, gotErr:= StackMachine("99 +")
+
+	want:= errors.New("Too few elements to add")
+
+	if gotErr.Error()!=want.Error(){
+		t.Error("Expected error due to test having few elements to add")
+	}
+} 
+
+ 
 /*
   All these tests must pass for completion
 */
