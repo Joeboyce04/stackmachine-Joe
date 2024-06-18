@@ -5,6 +5,8 @@ import (
 "strings"
 )
 
+//CHECK YOUR CAPITAL LETTERS !!!!!!!!!!!!!!!!!!!!!
+
 func StackMachine(commands string)(int, error) {
 	stack:=[]int{}
 	if commands== ""{
@@ -13,34 +15,26 @@ func StackMachine(commands string)(int, error) {
     commandWords := strings.Split(commands, " ")
 
 	for _, command := range commandWords {
-		if !ValidCommand(command){
-			return 0, errors.New("Invalid Command")
-		} 
-            }
-
-	/*	for _, command := range commandWords { 
+		if ValidCommand(command){
 			switch command {
-				case "+":
-					 if len(stack) < 2 { 
-					return 0, errors.New("Too few elements to add") 
+			case "POP":
+				if len(stack)==0 {
+					return 0, errors.New("Empty Stack")
 				}
-				}
-			} */
-
-	/*	if command=="+"{
-			if len(stack<2){
-				return 0, errors.New("Too few elements too")
+				stack=stack[:len(stack)-1]
+			
+			default:
+				return 0, errors.New("Valid Command") //For Now
+			} 
+			} else {
+				return 0, errors.New("Invalid Command") //For Now
 			}
 		}
-*/
-	
-	
-	
-	
+		return 0, nil
+	}
+
 
 	
-		return 0, errors.New("Valid Command")
-        }
 
 		
 

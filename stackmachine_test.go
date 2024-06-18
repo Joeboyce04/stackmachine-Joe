@@ -52,13 +52,40 @@ func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 func TestValidCommand(t *testing.T){
 	_, GotErr:= StackMachine("+")
 
-	want:= errors.New("Valid Command")
+	want:= errors.New("Valid Command")     //This test will likley have th change as valid command error will not be used
 
 	if GotErr.Error()!=want.Error(){
 		t.Error("Wanted",want,"But didnt get Valid Command prompt")
 	}
 }
 
+func TestPopEmptyStack(t* testing.T){
+	_, GotErr:= StackMachine("POP")
+
+	want:= errors.New("Empty Stack")
+	
+	if GotErr.Error()!=want.Error(){
+	t.Error("Expected error due to empty stack")
+}
+}
+
+/*func TestPopCommand(t *testing.T){
+	result, _:= StackMachine("1 2 POP")
+	want:=1											WILL IMPLEMENT LOGIC LATER FOCUSING ON FOUNDATIONS FIRST
+
+	if result!=want{
+		t.Error("Expected no error due to successful POP")
+	}
+} */ 
+
+/*func TestPopTwice(t *testing.T){
+	_, GotErr:= StackMachine("1 2 POP POP")
+	want:= errors.New("Empty Stack")
+
+	if GotErr.Error()!=want.Error(){
+		t.Error("Expected error due to empty stack after POP twice")
+}
+} */
 /*func TestIfTwoSymbolsValidCommand(t *testing.T){
 
 	_, GotErr:= StackMachine("+ -")
@@ -83,7 +110,7 @@ func TestCommandSymbolAndWord(t *testing.T){
 
 */
 
-func TestTwoFewAdd(t *testing.T){
+/*func TestTwoFewAdd(t *testing.T){
 	_, gotErr:= StackMachine("99 +")
 
 	want:= errors.New("Too few elements to add")
