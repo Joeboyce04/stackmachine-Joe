@@ -16,9 +16,10 @@ func StackMachine(commands string)(int, error) {
     commandWords := strings.Split(commands, " ")
 
 	for _, command := range commandWords {
-		if num, err := strconv.Atoi(command); err == nil {
-
+		num, err := strconv.Atoi(command) 
+		if err== nil{
 			stack = append(stack, num)
+		
 
 		} else if ValidCommand(command) {
 
