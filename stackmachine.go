@@ -3,6 +3,7 @@ package main
 import (
 "errors" 
 "strings"
+"strconv"
 )
 
 //CHECK YOUR CAPITAL LETTERS !!!!!!!!!!!!!!!!!!!!!
@@ -15,23 +16,31 @@ func StackMachine(commands string)(int, error) {
     commandWords := strings.Split(commands, " ")
 
 	for _, command := range commandWords {
-		if ValidCommand(command){
+		if num, err := strconv.Atoi(command); err == nil {
+
+			stack = append(stack, num)
+
+		} else if ValidCommand(command) {
+
 			switch command {
 			case "POP":
-				if len(stack)==0 {
+				if len(stack) == 0 {
 					return 0, errors.New("Empty Stack")
 				}
-				stack=stack[:len(stack)-1]
-			
+				stack = stack[:len(stack)-1]
 			default:
 				return 0, errors.New("Valid Command") //For Now
 			} 
 			} else {
 				return 0, errors.New("Invalid Command") //For Now
 			}
-		}
-		return 0, nil
+			if len(stack)==0{
+				return 0, errors.New("Empty Stack")
+			}
 	}
+	
+	return stack[len(stack)-1], nil
+}
 
 
 	

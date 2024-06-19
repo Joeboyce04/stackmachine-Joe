@@ -59,33 +59,65 @@ func TestValidCommand(t *testing.T){
 	}
 }
 
-func TestPopEmptyStack(t* testing.T){
-	_, GotErr:= StackMachine("POP")
 
+func TestPopSingleElement(t *testing.T){
+	result, GotErr:=StackMachine("1 POP")
 	want:= errors.New("Empty Stack")
+
+	if GotErr.Error()!= want.Error(){
+		t.Error("Expected error due to empty stack")
+	}
+	if result!=0{
+		t.Error("Expected 0 got",result)
+	}
 	
-	if GotErr.Error()!=want.Error(){
-	t.Error("Expected error due to empty stack")
-}
 }
 
-/*func TestPopCommand(t *testing.T){
-	result, _:= StackMachine("1 2 POP")
-	want:=1											WILL IMPLEMENT LOGIC LATER FOCUSING ON FOUNDATIONS FIRST
-
-	if result!=want{
+func TestPopAfterMultipleNumbers(t *testing.T){
+	result, GotErr:= StackMachine("1 2 3 POP")
+	want:= 2
+	if GotErr!=nil {
 		t.Error("Expected no error due to successful POP")
 	}
-} */ 
+	if result != want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
 
-/*func TestPopTwice(t *testing.T){
-	_, GotErr:= StackMachine("1 2 POP POP")
+func TestPopTwice(t *testing.T){
+	result, GotErr:= StackMachine("1 2 3 POP POP")
+	want:= 1
+	if GotErr!= nil{
+		t.Error("Expected no error due to successful POP")
+	}
+	if result != want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+func TestPOPEmpty(t *testing.T){
+	result, GotErr:= StackMachine("1 2 POP POP")
 	want:= errors.New("Empty Stack")
 
-	if GotErr.Error()!=want.Error(){
-		t.Error("Expected error due to empty stack after POP twice")
+	if GotErr.Error()!= want.Error(){
+		t.Error("EXpected error due to empty stack")
+	}
+	if result!=0{
+		t.Error("Expected 0 got",result)
+	}
 }
-} */
+
+func TestPOPAlone(t *testing.T){
+	result,GotErr:= StackMachine("POP")
+	want:= errors.New("Empty Stack")
+	if GotErr.Error()!= want.Error(){
+		t.Error("EXpected error due to empty stack")
+	}
+	if result!=0{
+		t.Error("Expected 0 got",result)
+	}
+}
+
 /*func TestIfTwoSymbolsValidCommand(t *testing.T){
 
 	_, GotErr:= StackMachine("+ -")
