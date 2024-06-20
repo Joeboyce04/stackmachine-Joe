@@ -29,6 +29,13 @@ func StackMachine(commands string)(int, error) {
 					return 0, errors.New("Empty Stack")
 				}
 				stack = stack[:len(stack)-1]
+			case "DUP":
+					 if len(stack) == 0 { 
+						return 0, errors.New("Empty Stack")
+						 } 
+			    top := stack[len(stack)-1] 
+
+				 stack = append(stack, top)
 			default:
 				return 0, errors.New("Valid Command") //For Now
 			} 

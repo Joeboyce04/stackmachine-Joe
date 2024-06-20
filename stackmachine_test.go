@@ -118,6 +118,40 @@ func TestPOPAlone(t *testing.T){
 	}
 }
 
+func TestDupSingleElement(t *testing.T) {
+    result, GotErr := StackMachine("1 DUP")
+    if GotErr != nil {
+        t.Error("Unexpected error")
+    }
+    want := 1
+    if result != want {
+        t.Error("Expected",want,"Got", GotErr)
+    }
+}
+
+func TestDupMultipleElements(t *testing.T) {
+    result, Goterr := StackMachine("1 2 3 DUP")
+    if Goterr != nil {
+        t.Error("Unexpected error")
+    }
+    want := 3
+    if result != want {
+		t.Error("Expected",want,"Got", Goterr)
+    }
+}
+
+func TestDupEmptyStack(t *testing.T) {
+    _, Goterr := StackMachine("DUP")
+    want := errors.New("Empty Stack")
+    if Goterr.Error() != want.Error() {
+        t.Error("Expected error due to empty stack")
+    }
+}
+
+
+//ADD POP DUP TESTS TOGETHER
+
+
 /*func TestIfTwoSymbolsValidCommand(t *testing.T){
 
 	_, GotErr:= StackMachine("+ -")
