@@ -5,11 +5,19 @@ import (
 	"testing"
 )
 
-func TestStartsWithEmptyStack(t *testing.T) {
-	_, err := StackMachine("")
+/*func TestSplitString(t *testing.T){
+	String:= "1 2 3"
+	want:= []string("5","6","8")
 
-	if err == nil {
-		t.Error("expected error due to no results")
+} */
+
+func TestSplitEmptyString(t *testing.T){
+	String:= ""
+
+	_, GotErr:=StackMachine(String)
+
+	if GotErr== nil{
+		t.Error("Expected error when splitting empty string")
 	}
 }
 
@@ -50,7 +58,7 @@ func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 
 
 func TestValidCommand(t *testing.T){
-	_, GotErr:= StackMachine("+")
+	_, GotErr:= StackMachine("-")
 
 	want:= errors.New("Valid Command")     //This test will likley have th change as valid command error will not be used
 
@@ -77,7 +85,7 @@ func TestPopAfterMultipleNumbers(t *testing.T){
 	result, GotErr:= StackMachine("1 2 3 POP")
 	want:= 2
 	if GotErr!=nil {
-		t.Error("Expected no error due to successful POP")
+		t.Error("Unexpected Error", GotErr.Error())
 	}
 	if result != want{
 		t.Error("Expected",want,"Got",result)
@@ -88,19 +96,28 @@ func TestPopTwice(t *testing.T){
 	result, GotErr:= StackMachine("1 2 3 POP POP")
 	want:= 1
 	if GotErr!= nil{
-		t.Error("Expected no error due to successful POP")
+		t.Error("Unexpected Error", GotErr.Error())
 	}
 	if result != want{
 		t.Error("Expected",want,"Got",result)
 	}
 }
 
+func TestPopEmptyStack(t *testing.T){
+	_, GotErr:= StackMachine("POP")
+	WantErr:= errors.New("Empty Stack")
+
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+}
+
 func TestPOPEmpty(t *testing.T){
 	result, GotErr:= StackMachine("1 2 POP POP")
-	want:= errors.New("Empty Stack")
+	WantErr:= errors.New("Empty Stack")
 
-	if GotErr.Error()!= want.Error(){
-		t.Error("EXpected error due to empty stack")
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
 	}
 	if result!=0{
 		t.Error("Expected 0 got",result)
@@ -109,9 +126,9 @@ func TestPOPEmpty(t *testing.T){
 
 func TestPOPAlone(t *testing.T){
 	result,GotErr:= StackMachine("POP")
-	want:= errors.New("Empty Stack")
-	if GotErr.Error()!= want.Error(){
-		t.Error("EXpected error due to empty stack")
+	WantErr:= errors.New("Empty Stack")
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
 	}
 	if result!=0{
 		t.Error("Expected 0 got",result)
@@ -121,7 +138,7 @@ func TestPOPAlone(t *testing.T){
 func TestDupSingleElement(t *testing.T) {
     result, GotErr := StackMachine("1 DUP")
     if GotErr != nil {
-        t.Error("Unexpected error")
+		t.Error("Unexpected Error", GotErr.Error())
     }
     want := 1
     if result != want {
@@ -130,26 +147,182 @@ func TestDupSingleElement(t *testing.T) {
 }
 
 func TestDupMultipleElements(t *testing.T) {
-    result, Goterr := StackMachine("1 2 3 DUP")
-    if Goterr != nil {
-        t.Error("Unexpected error")
+    result, GotErr := StackMachine("1 2 3 DUP")
+    if GotErr != nil {
+		t.Error("Unexpected Error", GotErr.Error())
     }
     want := 3
     if result != want {
-		t.Error("Expected",want,"Got", Goterr)
+		t.Error("Expected",want,"Got", GotErr)
     }
 }
 
 func TestDupEmptyStack(t *testing.T) {
-    _, Goterr := StackMachine("DUP")
-    want := errors.New("Empty Stack")
-    if Goterr.Error() != want.Error() {
-        t.Error("Expected error due to empty stack")
+    _, GotErr := StackMachine("DUP")
+    WantErr := errors.New("Empty Stack")
+    if GotErr.Error() != WantErr.Error() {
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+    }
+}
+
+func TestAddWithElements(t *testing.T){
+	result, GotErr:= StackMachine("1 2 +")
+	if GotErr!=nil{
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	want:=3
+	if result!=want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+func TestAddTooFewElements(t *testing.T){
+	result, GotErr:= StackMachine("99 +")
+	WantErr:= errors.New("Too Few Elements")
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	
+	if result!=0{
+		t.Error("Expected 0 Got",result)
+	}
+}
+
+
+
+//ADD POP DUP TESTS TOGETHER
+
+func TestPopAndDup(t *testing.T) {
+    result, GotErr := StackMachine("1 2 3 POP DUP")
+    if GotErr != nil {
+		t.Error("Unexpected Error", GotErr.Error())
+    }
+    want := 2
+    if result != want {
+		t.Error("Expected",want,",Got",result)
     }
 }
 
 
-//ADD POP DUP TESTS TOGETHER
+
+
+func TestPopAndDupWithSingleElement(t *testing.T) { 
+	result, GotErr := StackMachine("1 POP DUP") 
+	want := errors.New("Empty Stack") 
+	if GotErr.Error()!= want.Error(){
+		t.Error("Expected",want,"Got the error",GotErr) 
+		}
+		 if result != 0 { 
+			t.Error("Expected 0 Got",result) 
+		}
+		 }
+
+func TestDupWithMultipleElements(t *testing.T) {
+    result, GotErr := StackMachine("1 2 3 DUP")
+    if GotErr != nil {
+		t.Error("Unexpected Error", GotErr.Error())
+    }
+    want := 3 
+	if result!=want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+/*func TestAddDupPop(t *testing.T){
+	result, GotErr := StackMachine("1 2 DUP + POP")
+	if GotErr!= nil{
+		t.Error("Unexpected Error")
+	}
+	want:= 4										//Need to fix
+	if result!= want {
+		t.Error("Expected",want,"Got",result)
+	}
+} */
+
+func TestAddPopDup(t *testing.T){
+	result, GotErr := StackMachine("1 2 + POP DUP")
+	WantErr:= errors.New("Empty Stack")
+
+	if GotErr.Error()!=WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	if result!=0{
+		t.Error("Expected 0 Got",result)
+	}
+}
+
+func TestAddOperation(t *testing.T){
+	result, GotErr:= StackMachine("3 4 +")
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error() )
+	}
+	want:=7
+	if result !=want{
+		t.Error("Expected",want,"Got",result,)
+	}
+}
+
+func TestAddSingleElement(t *testing.T){
+	result, GotErr := StackMachine("1 +")
+	WantErr:= errors.New("Too Few Elements")
+
+	if GotErr.Error() != WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	if result != 0 { 
+		t.Error("Expected 0 Got",result) 
+	}
+}
+
+func TestAddWithNegativeElements(t *testing.T){
+	result, GotErr:= StackMachine("3 -1 +")
+
+	if GotErr != nil{
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	want:=2
+	if result!= want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+
+/*func TestMultipleOperations(t *testing.T){
+	result, GotErr:=StackMachine("1 2 DUP + 3 + POP")
+	if GotErr!= nil{
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	want:= 6
+	if result!=want {
+		t.Error("Expected",want,"Got",result)
+	}
+} */ 
+																					//need to fix
+/*func TestPopAfterAdd(t *testing.T){
+	result, GotErr := StackMachine("1 2 + POP")
+
+	if GotErr!=nil{
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	want:=3
+	if result!= want{
+		t.Error("Expected",want,"Got",result)
+	}
+} */
+
+func TestAddAfterDup(t *testing.T){
+	result, GotErr :=StackMachine("1 DUP +")
+	if GotErr!=nil{
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	want:=2
+	if result!= want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+
 
 
 /*func TestIfTwoSymbolsValidCommand(t *testing.T){

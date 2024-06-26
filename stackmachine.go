@@ -36,6 +36,13 @@ func StackMachine(commands string)(int, error) {
 			    top := stack[len(stack)-1] 
 
 				 stack = append(stack, top)
+			case "+":
+				if len(stack)<2{
+					return 0, errors.New("Too Few Elements")
+				}
+				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				stack =stack[:len(stack)-2]
+				stack= append(stack, a+b)
 			default:
 				return 0, errors.New("Valid Command") //For Now
 			} 
