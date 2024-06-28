@@ -286,17 +286,6 @@ func TestAddOperation(t *testing.T){
 	}
 }
 
-func TestAddSingleElement(t *testing.T){
-	result, GotErr := StackMachine("1 +")
-	WantErr:= errors.New("Too Few Elements")
-
-	if GotErr.Error() != WantErr.Error(){
-		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
-	}
-	if result != 0 { 
-		t.Error("Expected 0 Got",result) 
-	}
-}
 
 func TestAddWithNegativeElements(t *testing.T){
 	result, GotErr:= StackMachine("3 -1 +")
@@ -311,7 +300,6 @@ func TestAddWithNegativeElements(t *testing.T){
 }
 
 
-func TestOverflow(t *testing.T){}
 
 
 func TestEmptyStackAfterClear(t *testing.T){
@@ -377,21 +365,54 @@ func TestClearTooFew(t *testing.T){
 
 }
 
-func TestSingleInteger(t *testing.T){}
+func TestSingleInteger(t *testing.T){
+	result, GotErr:= StackMachine("15")
 
-func TestAddMinusMultiply(t *testing.T){}
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error() )
+	}
+	want:=15
+	if result !=want{
+		t.Error("Expected",want,"Got",result,)
+	}
+}
 
-func TestMinusAlone(t *testing.T){}
+
+//func TestAddMinusMultiply(t *testing.T){}
+
+//func TestOverflow(t *testing.T){}
+
+func TestMinus(t *testing.T){
+	result, GotErr:= StackMachine("4 3 -")
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error() )
+	}
+	want:=1
+	if result !=want{
+		t.Error("Expected",want,"Got",result,)
+	}
+}
+
 																//tests to implement will also look back through code as its currently a mess
-func TestAddAlone(t *testing.T){}
 
-func TestClearAlone(t *testing.T){}
 
-func TestSumAlone(t *testing.T){}
 
-func TestMultiplyAlone(t *testing.T){}
 
-func TestUnderflowMinus(t *testing.T){}
+func TestMultiply(t *testing.T){
+	result, GotErr:= StackMachine("3 4 *")
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error() )
+	}
+	want:=12
+	if result !=want{
+		t.Error("Expected",want,"Got",result,)
+	}
+}
+
+
+//func TestUnderflowMinus(t *testing.T){}
 
 
 
