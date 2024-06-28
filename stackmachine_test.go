@@ -26,10 +26,10 @@ func TestSplitEmptyString(t *testing.T){
 func TestEmptyError(t *testing.T){
 	_, GotErr:= StackMachine("")
 
-	want:= errors.New("empty error")
+	WantErr:= errors.New("empty error")
 
-	if GotErr.Error()!=want.Error(){
-		t.Error("Wanted",want,"but didnt get an empty command")
+	if GotErr.Error()!=WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
 	}
 
 }
@@ -37,27 +37,26 @@ func TestEmptyError(t *testing.T){
 func TestInvalidCommand(t *testing.T){
 	_, GotErr:= StackMachine("DOGBANA")
 
-	want:= errors.New("Invalid Command")
+	WantErr:= errors.New("Empty Stack")
 
-	if GotErr.Error()!=want.Error(){
-		t.Error("Wanted",want,"But didnt get invalid command prompt")
+	if GotErr.Error()!=WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
 	}
-}
+}																			
 
 func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 
 	_, GotErr:= StackMachine("+hello-")
 
-	want:= errors.New("Invalid Command")
+	WantErr:= errors.New("Empty Stack")
 
-	if GotErr.Error()!=want.Error(){
-		t.Error("Wanted",want,"But didnt get invalid command prompt")
+	if GotErr.Error()!=WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
 	}
-}
+}													
 
 
-
-func TestValidCommand(t *testing.T){
+/*func TestValidCommand(t *testing.T){
 	_, GotErr:= StackMachine("-")
 
 	want:= errors.New("Valid Command")     //This test will likley have th change as valid command error will not be used
@@ -65,7 +64,7 @@ func TestValidCommand(t *testing.T){
 	if GotErr.Error()!=want.Error(){
 		t.Error("Wanted",want,"But didnt get Valid Command prompt")
 	}
-}
+} */
 
 
 func TestPopSingleElement(t *testing.T){
@@ -189,6 +188,30 @@ func TestAddTooFewElements(t *testing.T){
 }
 
 
+func TestMinusTooFewElements(t *testing.T){
+	result, GotErr:= StackMachine("99 -")
+	WantErr:= errors.New("Too Few Elements")
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	
+	if result!=0{
+		t.Error("Expected 0 Got",result)
+	}
+}
+
+
+func TestMultiplyTooFewElements(t *testing.T){
+	result, GotErr:= StackMachine("99 *")
+	WantErr:= errors.New("Too Few Elements")
+	if GotErr.Error()!= WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	
+	if result!=0{
+		t.Error("Expected 0 Got",result)
+	}
+}
 
 //ADD POP DUP TESTS TOGETHER
 
@@ -279,13 +302,103 @@ func TestAddWithNegativeElements(t *testing.T){
 	result, GotErr:= StackMachine("3 -1 +")
 
 	if GotErr != nil{
-		t.Error("Unexpected Error", GotErr.Error())
+		t.Error("Unexpected Error", GotErr.Error())    // shouldnt be able to use negative
 	}
 	want:=2
 	if result!= want{
 		t.Error("Expected",want,"Got",result)
 	}
 }
+
+
+func TestOverflow(t *testing.T){}
+
+
+func TestEmptyStackAfterClear(t *testing.T){
+	result, GotErr:= StackMachine("99 CLEAR")
+	WantErr:= errors.New("Empty Stack")
+
+	if GotErr.Error() != WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	if result != 0{
+		t.Error("Expected 0 Got",result) 
+	}
+
+}
+
+func TestSumSingleValue(t *testing.T){
+	result, GotErr:= StackMachine("99 SUM")
+	want:= 99
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error() )
+	}
+	if result!= want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+func TestSumEmpty(t *testing.T){
+	result, GotErr:= StackMachine("SUM")
+	WantErr:= errors.New("Empty Stack")
+
+	if GotErr.Error() != WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	if result != 0{
+		t.Error("Expected 0 Got",result) 
+	}
+
+}
+
+func TestAddMultiply(t *testing.T){
+	result, GotErr:= StackMachine("5 6 + 2 *")
+	want:= 22
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error())
+	}
+	if result!= want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
+
+func TestClearTooFew(t *testing.T){
+	result, GotErr:= StackMachine("1 2 3 4 + CLEAR 12 +")
+	WantErr:= errors.New("Empty Stack")
+
+	if GotErr.Error() != WantErr.Error(){
+		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
+	}
+	if result != 0{
+		t.Error("Expected 0 Got",result) 
+	}
+
+}
+
+func TestSingleInteger(t *testing.T){}
+
+func TestAddMinusMultiply(t *testing.T){}
+
+func TestMinusAlone(t *testing.T){}
+																//tests to implement will also look back through code as its currently a mess
+func TestAddAlone(t *testing.T){}
+
+func TestClearAlone(t *testing.T){}
+
+func TestSumAlone(t *testing.T){}
+
+func TestMultiplyAlone(t *testing.T){}
+
+func TestUnderflowMinus(t *testing.T){}
+
+
+
+
+
+
+
 
 
 /*func TestMultipleOperations(t *testing.T){

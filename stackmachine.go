@@ -24,11 +24,13 @@ func StackMachine(commands string)(int, error) {
 		} else if ValidCommand(command) {
 
 			switch command {
+
 			case "POP":
 				if len(stack) == 0 {
 					return 0, errors.New("Empty Stack")
 				}
 				stack = stack[:len(stack)-1]
+
 			case "DUP":
 					 if len(stack) == 0 { 
 						return 0, errors.New("Empty Stack")
@@ -36,6 +38,7 @@ func StackMachine(commands string)(int, error) {
 			    top := stack[len(stack)-1] 
 
 				 stack = append(stack, top)
+
 			case "+":
 				if len(stack)<2{
 					return 0, errors.New("Too Few Elements")
@@ -43,19 +46,46 @@ func StackMachine(commands string)(int, error) {
 				a, b := stack[len(stack)-2], stack[len(stack)-1]
 				stack =stack[:len(stack)-2]
 				stack= append(stack, a+b)
+
+			case "-":
+				if len(stack) < 2 {
+					return 0, errors.New("Too Few Elements")
+				}
+				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				stack = stack[:len(stack)-2]
+				stack = append(stack, a-b)
+
+			case "*":
+				if len(stack) < 2 {
+					return 0, errors.New("Too Few Elements")
+				}
+				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				stack = stack[:len(stack)-2]
+				stack = append(stack, a*b)
+
+			case "CLEAR":
+				stack = []int{}
+
+			case "SUM":
+				if len(stack)==0{
+					return 0, errors.New("Empty Stack")
+				}
+				sum := 0
+				for _, num := range stack {
+					sum += num
+				}
+				stack = []int{sum}
 			default:
-				return 0, errors.New("Valid Command") //For Now
-			} 
-			} else {
-				return 0, errors.New("Invalid Command") //For Now
-			}
-			if len(stack)==0{
 				return 0, errors.New("Empty Stack")
 			}
+		}
+		if len(stack) == 0 {
+			return 0, errors.New("Empty Stack")
+		}
 	}
-	
 	return stack[len(stack)-1], nil
 }
+	
 
 
 	
