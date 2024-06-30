@@ -18,7 +18,11 @@ func StackMachine(commands string)(int, error) {
 	for _, command := range commandWords {
 		num, err := strconv.Atoi(command) 
 		if err== nil{
+			if num> 50000{
+				return 0, errors.New("Overflow Error")
+			}
 			stack = append(stack, num)
+			
 		
 
 		} else if ValidCommand(command) {
@@ -35,33 +39,39 @@ func StackMachine(commands string)(int, error) {
 					 if len(stack) == 0 { 
 						return 0, errors.New("Empty Stack")
 						 } 
-			    top := stack[len(stack)-1] 
+			    topSpot := stack[len(stack)-1] 
 
-				 stack = append(stack, top)
+				 stack = append(stack, topSpot)
 
 			case "+":
 				if len(stack)<2{
 					return 0, errors.New("Too Few Elements")
 				}
-				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				second, first := stack[len(stack)-1], stack[len(stack)-2] 
 				stack =stack[:len(stack)-2]
-				stack= append(stack, a+b)
+				if first+second>50000{
+					return 0, errors.New("Overflow Error")
+				}
+				stack= append(stack, second+first)
 
 			case "-":
 				if len(stack) < 2 {
 					return 0, errors.New("Too Few Elements")
 				}
-				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				first, second := stack[len(stack)-2], stack[len(stack)-1]
 				stack = stack[:len(stack)-2]
-				stack = append(stack, a-b)
+				stack = append(stack, second- first)
 
 			case "*":
 				if len(stack) < 2 {
 					return 0, errors.New("Too Few Elements")
 				}
-				a, b := stack[len(stack)-2], stack[len(stack)-1]
+				first, second := stack[len(stack)-2], stack[len(stack)-1]
 				stack = stack[:len(stack)-2]
-				stack = append(stack, a*b)
+				if first*second>5000{
+					return 0, errors.New("Overflow Error")
+				}
+				stack = append(stack, first*second)
 
 			case "CLEAR":
 				stack = []int{}
@@ -72,12 +82,17 @@ func StackMachine(commands string)(int, error) {
 				}
 				sum := 0
 				for _, num := range stack {
+					if sum+num > 50000{
+						return 0, errors.New("Overflow Error")
+					}
 					sum += num
 				}
 				stack = []int{sum}
 			default:
-				return 0, errors.New("Empty Stack")
+				return 0, errors.New("Invalid Command")
 			}
+		}else {
+			return 0,errors.New("Invalid Command")
 		}
 		if len(stack) == 0 {
 			return 0, errors.New("Empty Stack")
