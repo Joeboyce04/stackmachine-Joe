@@ -58,8 +58,11 @@ func StackMachine(commands string)(int, error) {
 				if len(stack) < 2 {
 					return 0, errors.New("Too Few Elements")
 				}
-				first, second := stack[len(stack)-2], stack[len(stack)-1]
+			    second, first := stack[len(stack)-1], stack[len(stack)-2]
 				stack = stack[:len(stack)-2]
+				if second-first<0 {
+					return 0, errors.New("Underflow Error")
+				}
 				stack = append(stack, second- first)
 
 			case "*":

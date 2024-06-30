@@ -383,12 +383,12 @@ func TestSingleInteger(t *testing.T){
 //func TestOverflow(t *testing.T){}
 
 func TestMinus(t *testing.T){
-	result, GotErr:= StackMachine("3 4 -")
+	result, GotErr:= StackMachine("2 5 -")
 
 	if GotErr != nil {
-		t.Error("Expected no Error got",GotErr.Error() )
+		t.Error("Expected no Error got",GotErr.Error(), result )
 	}
-	want:=1
+	want:=3
 	if result !=want{
 		t.Error("Expected",want,"Got",result,)
 	}
@@ -490,6 +490,14 @@ func TestAddAfterDup(t *testing.T){
 	}
 }
 
+func TestUnderflow(t *testing.T) {
+	_, GotErr := StackMachine("5 2 -")
+    WantErr := errors.New("Underflow Error")
+    if GotErr.Error() != WantErr.Error() {
+        t.Error("Expected", WantErr.Error(), "Got", GotErr.Error())
+    }
+}
+
 
 
 
@@ -553,7 +561,7 @@ func TestAcceptanceTests(t *testing.T) {
 		{name: "invalid command", commands: "DOGBANANA", expected: 0, expectedErr: errors.New("Invalid Command")},
 		{name: "normal +-*", commands: "5 9 DUP + + 43 - 3 *", expected: 60, expectedErr: nil},
 		{name: "minus", commands: "2 5 -", expected: 3, expectedErr: nil},
-		{name: "underflow minus", commands: "5 2 -", expected: 0, expectedErr: errors.New("Too Few Elements")},
+		{name: "underflow minus", commands: "5 2 -", expected: 0, expectedErr: errors.New("Underflow Error")},
 		{name: "at overflow limit", commands: "25000 DUP +", expected: 50000, expectedErr: nil},
 		{name: "at overflow limit single value", commands: "50000 0 +", expected: 50000, expectedErr: nil},
 		{name: "overflow plus", commands: "50000 1 +", expected: 0, expectedErr: errors.New("Overflow Error")},
