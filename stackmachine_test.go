@@ -354,7 +354,7 @@ func TestAddMultiply(t *testing.T){
 
 func TestClearTooFew(t *testing.T){
 	result, GotErr:= StackMachine("1 2 3 4 + CLEAR 12 +")
-	WantErr:= errors.New("Empty Stack")
+	WantErr:= errors.New("Too Few Elements")
 
 	if GotErr.Error() != WantErr.Error(){
 		t.Error("Expected",WantErr.Error(),"Got",GotErr.Error())
@@ -363,7 +363,7 @@ func TestClearTooFew(t *testing.T){
 		t.Error("Expected 0 Got",result) 
 	}
 
-}
+} 
 
 func TestSingleInteger(t *testing.T){
 	result, GotErr:= StackMachine("15")
@@ -555,7 +555,7 @@ func TestAcceptanceTests(t *testing.T) {
 		{name: "sum single value", commands: "99 SUM", expected: 99, expectedErr: nil},
 		{name: "sum empty", commands: "SUM", expected: 0, expectedErr: errors.New("Empty Stack")},
 		{name: "normal +*", commands: "5 6 + 2 *", expected: 22, expectedErr: nil},
-		{name: "clear too few", commands: "1 2 3 4 + CLEAR 12 +", expected: 0, expectedErr: errors.New("Empty Stack")},
+		{name: "clear too few", commands: "1 2 3 4 + CLEAR 12 +", expected: 0, expectedErr: errors.New("Too Few Elements")},
 		{name: "normal after clear", commands: "1 CLEAR 2 3 +", expected: 5, expectedErr: nil},
 		{name: "single integer", commands: "9876", expected: 9876, expectedErr: nil},
 		{name: "invalid command", commands: "DOGBANANA", expected: 0, expectedErr: errors.New("Invalid Command")},
