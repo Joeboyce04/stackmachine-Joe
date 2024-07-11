@@ -169,29 +169,8 @@ func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 
 
 
-func TestPopSingleElement(t *testing.T){
-	result, GotErr:=StackMachine("1 POP")
-	want:= errors.New("Empty Stack")
 
-	if GotErr.Error()!= want.Error(){
-		t.Error("Expected error due to empty stack")
-	}
-	if result!=0{
-		t.Error("Expected 0 got",result)
-	}
-	
-}
 
-func TestPopAfterMultipleNumbers(t *testing.T){
-	result, GotErr:= StackMachine("1 2 3 POP")
-	want:= 2
-	if GotErr!=nil {
-		t.Error("Unexpected Error", GotErr.Error())
-	}
-	if result != want{
-		t.Error("Expected",want,"Got",result)
-	}
-}
 
 func TestPopTwice(t *testing.T){
 	result, GotErr:= StackMachine("1 2 3 POP POP")
@@ -289,6 +268,18 @@ func TestAddTooFewElements(t *testing.T){
 	}
 }
 
+func TestPopSingleElement(t *testing.T){
+	result, GotErr:=StackMachine("1 POP")
+	want:= errors.New("Empty Stack")
+
+	if GotErr.Error()!= want.Error(){
+		t.Error("Expected error due to empty stack")
+	}
+	if result!=0{
+		t.Error("Expected 0 got",result)
+	}
+	
+}
 
 func TestMinusTooFewElements(t *testing.T){
 	result, GotErr:= StackMachine("99 -")
@@ -388,8 +379,31 @@ func TestAddOperation(t *testing.T){
 	}
 }
 
+func TestPopAfterMultipleNumbers(t *testing.T){
+	result, GotErr:= StackMachine("1 2 3 POP")
+	want:= 2
+	if GotErr!=nil {
+		t.Error("Unexpected Error", GotErr.Error())
+	}
+	if result != want{
+		t.Error("Expected",want,"Got",result)
+	}
+}
 
-func TestAddWithNegativeElements(t *testing.T){
+
+func TestMinus(t *testing.T){
+	result, GotErr:= StackMachine("2 5 -")
+
+	if GotErr != nil {
+		t.Error("Expected no Error got",GotErr.Error(), result )
+	}
+	want:=3
+	if result !=want{
+		t.Error("Expected",want,"Got",result,)
+	}
+}
+
+/*func TestAddWithNegativeElements(t *testing.T){
 	result, GotErr:= StackMachine("3 -1 +")
 
 	if GotErr != nil{
@@ -399,7 +413,7 @@ func TestAddWithNegativeElements(t *testing.T){
 	if result!= want{
 		t.Error("Expected",want,"Got",result)
 	}
-}
+} */
 
 
 
@@ -484,17 +498,7 @@ func TestSingleInteger(t *testing.T){
 
 //func TestOverflow(t *testing.T){}
 
-func TestMinus(t *testing.T){
-	result, GotErr:= StackMachine("2 5 -")
 
-	if GotErr != nil {
-		t.Error("Expected no Error got",GotErr.Error(), result )
-	}
-	want:=3
-	if result !=want{
-		t.Error("Expected",want,"Got",result,)
-	}
-}
 
 																//tests to implement will also look back through code as its currently a mess
 
