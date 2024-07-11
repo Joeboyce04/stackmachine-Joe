@@ -44,6 +44,118 @@ func TestInvalidCommand(t *testing.T){
 	}
 }																			
 
+func TestValidCommandPOP(t *testing.T) {
+    command := "POP"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for 'POP', got", result)
+    }
+}
+func TestValidCommandDUP(t *testing.T) {
+    command := "DUP"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for 'DUP', got", result)
+    }
+}
+func TestValidCommandPlus(t *testing.T) {
+    command := "+"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for '+', got", result)
+    }
+}
+func TestValidCommandMinus(t *testing.T) {
+    command := "-"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for '-', got", result)
+    }
+}
+func TestValidCommandMultiply(t *testing.T) {
+    command := "*"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for '*', got", result)
+    }
+}
+func TestValidCommandSUM(t *testing.T) {
+    command := "SUM"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for 'SUM', got", result)
+    }
+}
+func TestValidCommandCLEAR(t *testing.T) {
+    command := "CLEAR"
+    expected := true
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected valid command for 'CLEAR', got", result)
+    }
+}
+func TestInvalidCommandPOP(t *testing.T) {
+    command := "POPS"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for 'POPX', got", result)
+    }
+}
+func TestInvalidCommandDUP(t *testing.T) {
+    command := "DUPs"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for 'DUPLICATE', got", result)
+    }
+}
+func TestInvalidCommandPlus(t *testing.T) {
+    command := "++"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for '++', got", result)
+    }
+}
+func TestInvalidCommandMinus(t *testing.T) {
+    command := "--"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for '--', got", result)
+    }
+}
+func TestInvalidCommandMultiply(t *testing.T) {
+    command := "**"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for '**', got", result)
+    }
+}
+func TestInvalidCommandSUM(t *testing.T) {
+    command := "SUMs"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for 'SUMM', got", result)
+    }
+}
+func TestInvalidCommandCLEAR(t *testing.T) {
+    command := "CLEARS"
+    expected := false
+    result := ValidCommand(command)
+    if result != expected {
+        t.Error("Expected invalid command for 'CLEARALL', got", result)
+    }
+}
 func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 
 	_, GotErr:= StackMachine("+hello-")
@@ -55,16 +167,6 @@ func TestInvalidCommandContainingCorrectSymbol(t *testing.T){
 	}
 }													
 
-
-/*func TestValidCommand(t *testing.T){
-	_, GotErr:= StackMachine("-")
-
-	want:= errors.New("Valid Command")     //This test will likley have th change as valid command error will not be used
-
-	if GotErr.Error()!=want.Error(){
-		t.Error("Wanted",want,"But didnt get Valid Command prompt")
-	}
-} */
 
 
 func TestPopSingleElement(t *testing.T){
